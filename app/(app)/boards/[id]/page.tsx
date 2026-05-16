@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { KanbanBoard } from "@/components/kanban/KanbanBoard";
@@ -36,7 +37,7 @@ export default async function BoardPage({ params }: Props) {
     <div className="flex flex-col h-full">
       <div className="border-b border-border bg-surface px-6 py-3">
         <nav className="text-sm text-muted">
-          <span>Boards</span>
+          <Link href="/boards" className="hover:text-foreground transition-colors">Boards</Link>
           <span className="mx-2">/</span>
           <span className="font-medium text-foreground">{board.name}</span>
           <span className="ml-2 text-xs">
