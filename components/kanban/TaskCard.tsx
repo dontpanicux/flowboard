@@ -37,7 +37,7 @@ export function TaskCard({ task, index, onClick }: TaskCardProps) {
             )}
             {task.due_date && (
               <span className="text-xs text-muted">
-                {new Date(task.due_date).toLocaleDateString("en-US", { month: "short", day: "numeric" })}
+                {new Date(task.due_date + "T00:00:00").toLocaleDateString("en-US", { month: "short", day: "numeric" })}
               </span>
             )}
           </div>

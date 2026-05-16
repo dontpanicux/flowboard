@@ -1,5 +1,11 @@
 # FlowBoard — Claude Code Context
 
+## Security Rules
+- **Never pass secrets inline in shell commands** (e.g. `echo "secret" | vercel env add`)
+- For `vercel env add`: run without a value — Vercel will prompt interactively in the terminal
+- `SUPABASE_SERVICE_ROLE_KEY` and any other secret keys must only be typed by the user directly in their own terminal, never passed through Claude Code commands
+- `NEXT_PUBLIC_*` vars are safe to inline — they're already public by definition
+
 ## Project
 Kanban-style task management web app. Design source: Figma file `R0Qnpaq1cfqIrSCFxZLSY5`.
 - Components page: `node-id=0:1`
