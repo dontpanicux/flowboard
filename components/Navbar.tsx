@@ -4,9 +4,11 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 
-export function Navbar() {
+export function Navbar({ email }: { email: string }) {
   const router = useRouter();
   const supabase = createClient();
+
+  const displayName = email.split("@")[0];
 
   async function handleSignOut() {
     await supabase.auth.signOut();
@@ -29,10 +31,7 @@ export function Navbar() {
             </div>
             <span className="font-semibold text-foreground">FlowBoard</span>
           </Link>
-          <Link
-            href="/boards"
-            className="text-sm text-muted hover:text-foreground transition-colors"
-          >
+          <Link href="/boards" className="text-sm text-muted hover:text-foreground transition-colors">
             Boards
           </Link>
         </div>
@@ -40,13 +39,14 @@ export function Navbar() {
           onClick={handleSignOut}
           className="flex items-center gap-2 text-sm text-muted hover:text-foreground transition-colors"
         >
+          <span className="hidden sm:block">{displayName}</span>
           <div className="flex h-7 w-7 items-center justify-center rounded-full bg-primary">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
               <circle cx="12" cy="7" r="4" />
             </svg>
           </div>
-          Sign out
+          <span className="text-xs text-muted">Sign out</span>
         </button>
       </div>
     </header>

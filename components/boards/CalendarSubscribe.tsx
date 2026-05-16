@@ -1,12 +1,23 @@
 'use client';
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 
 export function CalendarSubscribe({ token }: { token: string }) {
   const [open, setOpen] = useState(false);
   const [copied, setCopied] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
 
   const url = `${typeof window !== "undefined" ? window.location.origin : ""}/api/calendar/${token}.ics`;
+
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (ref.current && !ref.current.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    }
+    if (open) document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [open]);
 
   async function handleCopy() {
     await navigator.clipboard.writeText(url);
@@ -15,7 +26,7 @@ export function CalendarSubscribe({ token }: { token: string }) {
   }
 
   return (
-    <div className="relative">
+    <div className="relative" ref={ref}>
       <button
         onClick={() => setOpen(!open)}
         className="flex items-center gap-1.5 text-sm text-muted hover:text-foreground transition-colors"
