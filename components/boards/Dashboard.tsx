@@ -8,6 +8,7 @@ import { BoardCard } from "./BoardCard";
 import { CreateBoardModal } from "./CreateBoardModal";
 import { CalendarSubscribe } from "./CalendarSubscribe";
 import { Button } from "@/components/ui/Button";
+import { ParticleBackground } from "@/components/ParticleBackground";
 
 type TaskWithRelations = {
   id: string;
@@ -50,7 +51,9 @@ export function Dashboard({
   const overdue = overdueTasks.length;
 
   return (
-    <div className="mx-auto max-w-7xl px-6 py-8">
+    <div className="relative min-h-screen">
+      <ParticleBackground />
+    <div className="relative mx-auto max-w-7xl px-6 py-8">
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-bold text-foreground">My Workspace</h1>
@@ -129,6 +132,7 @@ export function Dashboard({
       )}
 
       <CreateBoardModal open={showModal} onClose={() => setShowModal(false)} />
+    </div>
     </div>
   );
 }
