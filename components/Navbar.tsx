@@ -38,8 +38,14 @@ export function Navbar() {
         </div>
         <button
           onClick={handleSignOut}
-          className="text-sm text-muted hover:text-foreground transition-colors"
+          className="flex items-center gap-2 text-sm text-muted hover:text-foreground transition-colors"
         >
+          <div className="flex h-7 w-7 items-center justify-center rounded-full bg-primary">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+              <circle cx="12" cy="7" r="4" />
+            </svg>
+          </div>
           Sign out
         </button>
       </div>

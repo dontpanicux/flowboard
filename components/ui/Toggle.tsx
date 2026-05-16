@@ -8,15 +8,15 @@ interface ToggleProps {
 
 export function Toggle({ options, value, onChange }: ToggleProps) {
   return (
-    <div className="flex rounded-lg border border-border bg-surface p-1 gap-1">
+    <div className="flex rounded-lg bg-gray-100 p-1 gap-1">
       {options.map((option) => (
         <button
           key={option}
           type="button"
           onClick={() => onChange(option)}
-          className={`flex-1 rounded-md px-3 py-1.5 text-sm font-medium transition-colors ${
+          className={`flex-1 rounded-md px-3 py-1.5 text-sm font-medium transition-all ${
             value === option
-              ? "bg-primary text-white"
+              ? "bg-white text-foreground shadow-sm"
               : "text-muted hover:text-foreground"
           }`}
         >

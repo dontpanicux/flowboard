@@ -11,7 +11,7 @@ export function BoardCard({ board }: { board: Board }) {
   return (
     <Link
       href={`/boards/${board.id}`}
-      className="block rounded-xl border border-border bg-surface p-5 shadow-sm hover:shadow-md hover:border-primary/40 transition-all"
+      className="block rounded-xl bg-surface p-5 shadow-sm hover:shadow-md transition-all"
     >
       <h3 className="font-semibold text-foreground">{board.name}</h3>
       <p className="mt-1 text-xs text-muted">{date}</p>

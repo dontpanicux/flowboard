@@ -138,9 +138,9 @@ export function CreateTaskModal({
             <span />
           )}
           <div className="flex gap-2">
-            <Button type="button" variant="action" onClick={onClose}>
+            <button type="button" onClick={onClose} className="text-sm text-muted hover:text-foreground transition-colors px-3 py-2">
               Cancel
-            </Button>
+            </button>
             <Button type="submit" variant="primary" disabled={loading || !name.trim()}>
               {loading ? "Saving…" : "Save"}
             </Button>
