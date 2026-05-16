@@ -13,16 +13,16 @@ interface Particle {
 }
 
 const COLORS = ["#7C3AED", "#8B5CF6", "#A78BFA", "#C4B5FD"];
-const COUNT = 55;
+const COUNT = 120;
 
 function makeParticle(w: number, h: number, randomY = true): Particle {
   return {
     x: Math.random() * w,
     y: randomY ? Math.random() * h : h + Math.random() * 80,
-    size: Math.random() * 2 + 1.2,
+    size: Math.random() * 2.5 + 1.2,
     speedY: -(Math.random() * 0.35 + 0.1),
     speedX: (Math.random() - 0.5) * 0.2,
-    opacity: Math.random() * 0.12 + 0.08,
+    opacity: Math.random() * 0.18 + 0.1,
     color: COLORS[Math.floor(Math.random() * COLORS.length)],
   };
 }
