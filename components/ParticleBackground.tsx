@@ -13,16 +13,16 @@ interface Particle {
 }
 
 const COLORS = ["#7C3AED", "#8B5CF6", "#A78BFA", "#C4B5FD"];
-const COUNT = 50;
+const COUNT = 55;
 
 function makeParticle(w: number, h: number, randomY = true): Particle {
   return {
     x: Math.random() * w,
     y: randomY ? Math.random() * h : h + Math.random() * 80,
-    size: Math.random() * 1.8 + 0.8,
-    speedY: -(Math.random() * 0.35 + 0.08),
-    speedX: (Math.random() - 0.5) * 0.18,
-    opacity: Math.random() * 0.09 + 0.04,
+    size: Math.random() * 2 + 1.2,
+    speedY: -(Math.random() * 0.35 + 0.1),
+    speedX: (Math.random() - 0.5) * 0.2,
+    opacity: Math.random() * 0.12 + 0.08,
     color: COLORS[Math.floor(Math.random() * COLORS.length)],
   };
 }
@@ -40,8 +40,8 @@ export function ParticleBackground() {
     let particles: Particle[] = [];
 
     function resize() {
-      canvas!.width = canvas!.offsetWidth;
-      canvas!.height = canvas!.offsetHeight;
+      canvas!.width = window.innerWidth;
+      canvas!.height = window.innerHeight;
     }
 
     function tick() {
@@ -76,20 +76,18 @@ export function ParticleBackground() {
       }
     }
 
-    const ro = new ResizeObserver(resize);
-    ro.observe(canvas);
-
     resize();
     particles = Array.from({ length: COUNT }, () =>
       makeParticle(canvas.width, canvas.height)
     );
 
+    window.addEventListener("resize", resize);
     document.addEventListener("visibilitychange", handleVisibility);
     rafId = requestAnimationFrame(tick);
 
     return () => {
       cancelAnimationFrame(rafId);
-      ro.disconnect();
+      window.removeEventListener("resize", resize);
       document.removeEventListener("visibilitychange", handleVisibility);
     };
   }, []);
@@ -98,7 +96,8 @@ export function ParticleBackground() {
     <canvas
       ref={canvasRef}
       aria-hidden="true"
-      className="absolute inset-0 w-full h-full pointer-events-none"
+      className="fixed inset-0 pointer-events-none"
+      style={{ zIndex: 0 }}
     />
   );
 }
