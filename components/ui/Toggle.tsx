@@ -14,7 +14,8 @@ export function Toggle({ options, value, onChange }: ToggleProps) {
           key={option}
           type="button"
           onClick={() => onChange(option)}
-          className={`flex-1 rounded-md px-3 py-1.5 text-sm font-medium transition-all ${
+          aria-pressed={value === option}
+          className={`flex-1 rounded-md px-3 py-1.5 text-sm font-medium transition-all focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary ${
             value === option
               ? "bg-white text-foreground shadow-sm"
               : "text-muted hover:text-foreground"

@@ -87,7 +87,7 @@ export function CreateTaskModal({
         <h2 className="text-lg font-semibold text-foreground">
           {task ? "Edit Task" : "Create Task"}
         </h2>
-        <button onClick={onClose} className="text-muted hover:text-foreground text-xl leading-none">
+        <button onClick={onClose} aria-label="Close modal" className="text-muted hover:text-foreground text-xl leading-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary rounded">
           ×
         </button>
       </div>
@@ -109,8 +109,9 @@ export function CreateTaskModal({
         />
         <div className="grid grid-cols-2 gap-4">
           <div className="flex flex-col gap-1">
-            <label className="text-xs font-medium text-muted uppercase tracking-wide">Priority</label>
+            <label htmlFor="task-priority" className="text-xs font-medium text-muted uppercase tracking-wide">Priority</label>
             <select
+              id="task-priority"
               value={priority}
               onChange={(e) => setPriority(e.target.value as typeof priority)}
               className="rounded-lg border border-border bg-surface px-3 py-2 text-sm text-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"

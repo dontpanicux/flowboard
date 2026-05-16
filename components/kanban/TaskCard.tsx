@@ -24,14 +24,26 @@ export function TaskCard({ task, index, onClick }: TaskCardProps) {
           {...provided.draggableProps}
           {...provided.dragHandleProps}
           onClick={() => onClick(task)}
-          className={`rounded-lg border border-border bg-surface p-3 cursor-pointer hover:border-primary/40 transition-all ${
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              onClick(task);
+            }
+          }}
+          role="button"
+          tabIndex={0}
+          aria-label={`Edit task: ${task.name}`}
+          className={`rounded-lg border border-border bg-surface p-3 cursor-pointer hover:border-primary/40 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary transition-all ${
             snapshot.isDragging ? "shadow-lg rotate-1" : "shadow-sm"
           }`}
         >
           <p className="text-sm font-medium text-foreground">{task.name}</p>
           <div className="mt-2 flex items-center gap-2 flex-wrap">
             {task.priority && (
-              <span className={`rounded px-1.5 py-0.5 text-xs font-medium ${priorityColors[task.priority]}`}>
+              <span
+                className={`rounded px-1.5 py-0.5 text-xs font-medium ${priorityColors[task.priority]}`}
+                aria-label={`Priority: ${task.priority}`}
+              >
                 {task.priority}
               </span>
             )}

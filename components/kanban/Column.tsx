@@ -38,6 +38,8 @@ export function Column({ column, tasks, onRefresh }: ColumnProps) {
           <div
             ref={provided.innerRef}
             {...provided.droppableProps}
+            role="group"
+            aria-label={`${column.name} column, ${tasks.length} ${tasks.length === 1 ? "task" : "tasks"}`}
             className={`flex flex-col gap-2 min-h-24 flex-1 rounded-lg p-1 transition-colors ${
               snapshot.isDraggingOver ? "bg-primary-light" : ""
             }`}

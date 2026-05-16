@@ -13,9 +13,9 @@ function StatCard({ label, value, accent = "default" }: Stat) {
       : "text-foreground";
 
   return (
-    <div className="rounded-xl bg-surface p-4 shadow-sm flex flex-col gap-1">
-      <span className={`text-2xl font-bold ${valueColor}`}>{value}</span>
-      <span className="text-xs text-muted">{label}</span>
+    <div className="rounded-xl bg-surface p-4 shadow-sm flex flex-col gap-1" aria-label={`${label}: ${value}`}>
+      <span className={`text-2xl font-bold ${valueColor}`} aria-hidden="true">{value}</span>
+      <span className="text-xs text-muted" aria-hidden="true">{label}</span>
     </div>
   );
 }

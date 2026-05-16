@@ -29,9 +29,9 @@ interface DashboardProps {
 function SectionHeader({ icon, title, count }: { icon: string; title: string; count: number }) {
   return (
     <div className="flex items-center gap-2 mb-3">
-      <span>{icon}</span>
+      <span aria-hidden="true">{icon}</span>
       <h2 className="text-sm font-semibold text-foreground">{title}</h2>
-      <span className="text-xs text-muted">({count})</span>
+      <span className="text-xs text-muted" aria-label={`${count} items`}>({count})</span>
     </div>
   );
 }
