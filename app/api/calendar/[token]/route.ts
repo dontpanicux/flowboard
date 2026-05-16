@@ -1,5 +1,5 @@
 import { type NextRequest } from "next/server";
-import { createServiceClient } from "@/lib/supabase/service";
+import { createBrowserClient } from "@supabase/ssr";
 
 function formatICSDate(dateStr: string) {
   return dateStr.replace(/-/g, "");
@@ -12,7 +12,11 @@ function nextDay(dateStr: string) {
 }
 
 function escapeICS(str: string) {
-  return str.replace(/\\/g, "\\\\").replace(/;/g, "\\;").replace(/,/g, "\\,").replace(/\n/g, "\\n");
+  return str
+    .replace(/\\/g, "\\\\")
+    .replace(/;/g, "\\;")
+    .replace(/,/g, "\\,")
+    .replace(/\n/g, "\\n");
 }
 
 export async function GET(
@@ -20,42 +24,33 @@ export async function GET(
   { params }: { params: Promise<{ token: string }> }
 ) {
   const { token } = await params;
-
-  // Strip .ics suffix if present
   const cleanToken = token.replace(/\.ics$/, "");
 
-  const supabase = createServiceClient();
+  const supabase = createBrowserClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  );
 
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("id")
-    .eq("calendar_token", cleanToken)
-    .single();
+  const { data: tasks, error } = await supabase.rpc("get_tasks_by_calendar_token", {
+    p_token: cleanToken,
+  });
 
-  if (!profile) {
+  if (error || !tasks) {
     return new Response("Not found", { status: 404 });
   }
 
-  // Fetch all tasks with due dates for this user via join
-  const { data: tasks } = await supabase
-    .from("tasks")
-    .select("id, name, description, due_date, priority, columns(name, boards(id, name, user_id))")
-    .not("due_date", "is", null);
+  if (tasks.length === 0) {
+    // Valid token but no tasks with due dates — return empty calendar
+  }
 
-  // Filter to only this user's tasks (RLS not active with service role)
-  const userTasks = (tasks ?? []).filter(
-    (t: any) => t.columns?.boards?.user_id === profile.id
-  );
-
-  const events = userTasks
+  const events = tasks
     .map((task: any) => {
       const summary = task.priority === "high"
         ? `[High] ${task.name}`
         : task.name;
-      const boardName = task.columns?.boards?.name ?? "FlowBoard";
       const desc = [
         task.description ? escapeICS(task.description) : "",
-        `Board: ${escapeICS(boardName)}`,
+        `Board: ${escapeICS(task.board_name ?? "")}`,
         task.priority ? `Priority: ${task.priority}` : "",
       ]
         .filter(Boolean)
