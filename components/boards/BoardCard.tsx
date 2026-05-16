@@ -2,7 +2,7 @@ import Link from "next/link";
 import type { Board } from "@/lib/types/database.types";
 
 export function BoardCard({ board }: { board: Board }) {
-  const date = new Date(board.created_at).toLocaleDateString("en-US", {
+  const date = new Date(board.created_at ?? "").toLocaleDateString("en-US", {
     month: "short",
     day: "numeric",
     year: "numeric",

@@ -35,7 +35,7 @@ export function CreateTaskModal({
     if (task) {
       setName(task.name);
       setDescription(task.description ?? "");
-      setPriority(task.priority ?? "");
+      setPriority((task.priority ?? "") as "low" | "medium" | "high" | "");
       setDueDate(task.due_date ?? "");
     } else {
       setName("");
