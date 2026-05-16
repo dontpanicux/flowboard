@@ -1,5 +1,5 @@
 import { type NextRequest } from "next/server";
-import { createBrowserClient } from "@supabase/ssr";
+import { createClient } from "@supabase/supabase-js";
 
 function formatICSDate(dateStr: string) {
   return dateStr.replace(/-/g, "");
@@ -14,9 +14,11 @@ function nextDay(dateStr: string) {
 function escapeICS(str: string) {
   return str
     .replace(/\\/g, "\\\\")
+    .replace(/\r\n/g, "\\n")
+    .replace(/\r/g, "\\n")
+    .replace(/\n/g, "\\n")
     .replace(/;/g, "\\;")
-    .replace(/,/g, "\\,")
-    .replace(/\n/g, "\\n");
+    .replace(/,/g, "\\,");
 }
 
 export async function GET(
@@ -26,7 +28,8 @@ export async function GET(
   const { token } = await params;
   const cleanToken = token.replace(/\.ics$/, "");
 
-  const supabase = createBrowserClient(
+  // Use a plain anon client — no session needed, the RPC is SECURITY DEFINER
+  const supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
   );
@@ -35,15 +38,11 @@ export async function GET(
     p_token: cleanToken,
   });
 
-  if (error || !tasks) {
+  if (error) {
     return new Response("Not found", { status: 404 });
   }
 
-  if (tasks.length === 0) {
-    // Valid token but no tasks with due dates — return empty calendar
-  }
-
-  const events = tasks
+  const events = (tasks ?? [])
     .map((task: any) => {
       const summary = task.priority === "high"
         ? `[High] ${task.name}`
